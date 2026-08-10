@@ -38,10 +38,11 @@
     <p class="text-sm text-red-600">{{ $message }}</p>
     @enderror
 
-    <textarea id="texto" name="texto" rows="4" placeholder="Escribe algo..."
+    <textarea id="texto" name="texto" rows="4" placeholder="Escribe algo..." maxlength="5000"
       class="w-full rounded-xl border border-slate-300 p-3 text-slate-900
              focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
     >{{ old('texto') }}</textarea>
+    <p id="contador" class="text-right text-xs text-slate-400">0 / 5000</p>
 
     @error('texto')
       <p class="text-sm text-red-600">{{ $message }}</p>
@@ -62,7 +63,17 @@
         <p class="mt-2 text-lg text-slate-900 whitespace-pre-wrap">{{ session('traduccion') }}</p>
     </div>
     @endif
+<script>
+    const texto = document.getElementById('texto');
+    const contador = document.getElementById('contador');
 
+    function actualizarContador() {
+        contador.textContent = texto.value.length + ' / 5000';
+    }
+
+    texto.addEventListener('input', actualizarContador);
+    actualizarContador(); // para que muestre bien el valor inicial (old('texto'))
+</script>
 </body>
 <script>
     const funciones = document.getElementById('funciones');
@@ -76,4 +87,5 @@
     funciones.addEventListener('change', alternarIdioma);
     alternarIdioma();
 </script>
+
 </html>
