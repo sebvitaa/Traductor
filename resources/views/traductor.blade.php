@@ -11,7 +11,7 @@
 <div class="w-full max-w-xl space-y-5">
     @php $idiomas = ['ES'=>'Español','EN'=>'Inglés','FR'=>'Francés','RU'=>'Ruso','ZH'=>'Chino']; @endphp
   <h1 class="text-center text-3xl font-bold text-slate-900">Traductor con IA</h1>
-  <form method="POST" action="/traducir"
+  <form method="POST" action="{{ route('traducir') }}"
         class="space-y-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
     @csrf
     <label for="idioma" class="block text-sm font-medium text-slate-700">Idioma</label>
@@ -39,22 +39,18 @@
     <button type="submit"
       class="w-full rounded-xl bg-indigo-600 px-4 py-2.5 font-medium text-white
              transition hover:bg-indigo-700">
-      Traducir al inglés
+      Traducir
     </button>
   </form>
 
-  @isset($traduccion)
+    @if (session('traduccion'))
     <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-      <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Traducción</p>
-      <p class="mt-2 text-lg text-slate-900">{{ $traduccion }}</p>
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+        Traducción — {{ $idiomas[session('idioma')] ?? '' }}
+        </p>
+        <p class="mt-2 text-lg text-slate-900 whitespace-pre-wrap">{{ session('traduccion') }}</p>
     </div>
-
-    <script>
-      console.log('Texto original:', @json($texto));
-      console.log('Traducción:', @json($traduccion));
-    </script>
-  @endisset
-</div>
+    @endif
 
 </body>
 </html>

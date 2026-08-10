@@ -13,15 +13,13 @@ class TraductorController extends Controller
     {
         $validated = $request->validate([
             'texto' => ['required', 'string', 'max:5000'],
-            'idioma' => ['required', 'string', 'size:2'],
+            'idioma' => ['required', 'string', 'in:ES,EN,FR,RU,ZH'],
         ], [
             'texto.required' => 'Escribe algo para traducir.',
             'texto.max' => 'El texto no puede pasar de :max caracteres.',
             'idioma.required' => 'Selecciona un idioma.',
-            'idioma.size' => 'El idioma seleccionado no es válido.',
+            'idioma.in' => 'El idioma seleccionado no está disponible.',
         ]);
-
-        $texto = $validated['texto'];
 
         $idiomas = [
             'ES' => 'español',
@@ -43,7 +41,7 @@ class TraductorController extends Controller
                 'model' => config('services.groq.model'),
                 'messages' => [
                     ['role' => 'system', 'content' => $rol],
-                    ['role' => 'user', 'content' => $texto],
+                    ['role' => 'user', 'content' => $validated['texto']],
                 ],
             ]);
 
@@ -53,9 +51,7 @@ class TraductorController extends Controller
                 'body' => $respuesta->json(),
             ]);
 
-            return back()->withInput()->withErrors([
-                'texto' => 'No se pudo traducir. Intenta de nuevo.',
-            ]);
+            return back()->withInput()->withErrors(['api' => 'No se pudo traducir. Intenta de nuevo.']);
         }
 
         $traduccion = $respuesta->json('choices.0.message.content');
@@ -65,11 +61,12 @@ class TraductorController extends Controller
                 'body' => $respuesta->json(),
             ]);
 
-            return back()->withInput()->withErrors([
-                'texto' => 'La respuesta vino vacía. Intenta de nuevo.',
-            ]);
+            return back()->withInput()->withErrors(['api' => 'No se pudo traducir. Intenta de nuevo.']);
         }
 
-        return back()->withInput()->with('traduccion', $traduccion);
+        return back()->withInput()->with([
+            'traduccion' => $traduccion,
+            'idioma' => $validated['idioma'],
+        ]);
     }
 }
