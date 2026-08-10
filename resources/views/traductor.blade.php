@@ -3,11 +3,42 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Traductor con IA</title>
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+  <style>
+    :root{ --acento:#7c6cff; --acento-2:#a855f7; }
 
+    body.obsidiana{
+      background:
+        radial-gradient(900px 450px at 50% -10%, rgba(124,108,255,.14), transparent 60%),
+        linear-gradient(180deg,#0a0b0f,#12141b) !important;
+      color:#e6e8ee;
+    }
+    .obsidiana .bg-white{ background:rgba(23,26,34,.9) !important; }
+    .obsidiana .ring-slate-200{ --tw-ring-color:#272c38 !important; }
+    .obsidiana .text-slate-900{ color:#e6e8ee !important; }
+    .obsidiana .text-slate-700{ color:#c7cddb !important; }
+    .obsidiana .text-slate-400{ color:#8b93a7 !important; }
+    .obsidiana .text-red-600{ color:#f87171 !important; }
+    .obsidiana select,
+    .obsidiana textarea{
+      background:#0f1219 !important; border-color:#272c38 !important; color:#e6e8ee !important;
+    }
+    .obsidiana textarea::placeholder{ color:#5b6172 !important; }
+    .obsidiana select:focus,
+    .obsidiana textarea:focus{
+      border-color:var(--acento) !important;
+      box-shadow:0 0 0 3px rgba(124,108,255,.25) !important; outline:none !important;
+    }
+    .obsidiana .bg-indigo-600{
+      background:linear-gradient(135deg,var(--acento),var(--acento-2)) !important;
+      box-shadow:0 10px 25px -8px rgba(124,108,255,.6) !important;
+    }
+    .obsidiana .hover\:bg-indigo-700:hover{ background:linear-gradient(135deg,#6a5aff,#9333ea) !important; }
+  </style>
+</head>
+<body class="obsidiana min-h-screen bg-slate-50 flex items-center justify-center p-6">
 <div class="w-full max-w-xl space-y-5">
     @php $idiomas = ['ES'=>'Español','EN'=>'Inglés','FR'=>'Francés','RU'=>'Ruso','ZH'=>'Chino']; @endphp
     @php $funciones = ['TR'=>'Traducir','CO'=>'Corregir Ortografía']; @endphp
